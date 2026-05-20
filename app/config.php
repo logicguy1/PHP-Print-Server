@@ -2,7 +2,7 @@
 
 define('DB_PATH',        '/var/www/data/printserver.db');
 define('UPLOAD_DIR',     __DIR__ . '/public/uploads/');
-define('MAX_UPLOAD_MB',  20);
+define('MAX_UPLOAD_MB',  512);
 define('MAX_UPLOAD_BYTES', MAX_UPLOAD_MB * 1024 * 1024);
 
 // Default printer — override with the name shown by `lpstat -p`

@@ -9,6 +9,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite
 
+RUN printf "upload_max_filesize = 512M\npost_max_size = 512M\n" \
+    > /usr/local/etc/php/conf.d/uploads.ini
+
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 RUN mkdir -p /var/www/data /var/www/html/public/uploads
