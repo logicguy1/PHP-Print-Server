@@ -393,31 +393,6 @@ a:hover { color: var(--navy-light); }
 /* ============================================================
    Stats Grid (Dashboard)
    ============================================================ */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 10px;
-    margin-bottom: 16px;
-}
-
-.stat-box {
-    background: var(--white);
-    border: 2px solid;
-    border-color: var(--gray) var(--white) var(--white) var(--gray);
-    padding: 10px 12px;
-    text-align: center;
-}
-.stat-box-value {
-    font-size: 28px;
-    font-weight: bold;
-    color: var(--navy);
-    line-height: 1.1;
-}
-.stat-box-label {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 3px;
-}
 
 /* ============================================================
    Tabs (Admin)
@@ -654,7 +629,6 @@ a:hover { color: var(--navy-light); }
     /* Hide less important columns on mobile */
     .data-table .col-hide-mobile { display: none; }
 
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
 
     .window-body { padding: 10px; }
 

@@ -11,23 +11,6 @@ $user = current_user();
 $db = db();
 cups_sync_pending_jobs($db);
 
-// Stats
-$total  = (int)$db->prepare('SELECT COUNT(*) FROM print_jobs WHERE user_id = ?')
-              ->execute([$user['id']]) ? $db->query(
-                  "SELECT COUNT(*) FROM print_jobs WHERE user_id = {$user['id']}")->fetchColumn() : 0;
-
-$stmt = $db->prepare('SELECT COUNT(*) FROM print_jobs WHERE user_id = ?');
-$stmt->execute([$user['id']]);
-$total = (int)$stmt->fetchColumn();
-
-$stmt = $db->prepare("SELECT COUNT(*) FROM print_jobs WHERE user_id = ? AND status = 'done'");
-$stmt->execute([$user['id']]);
-$done = (int)$stmt->fetchColumn();
-
-$stmt = $db->prepare("SELECT COUNT(*) FROM print_jobs WHERE user_id = ? AND status IN ('pending','printing')");
-$stmt->execute([$user['id']]);
-$active = (int)$stmt->fetchColumn();
-
 // Recent 5 jobs
 $stmt = $db->prepare(
     'SELECT id, original_name, copies, paper_size, duplex, quality, status, created_at
@@ -45,21 +28,6 @@ layout_head('Dashboard', 'dashboard');
     <a href="/new_job.php" class="btn btn-primary">+ New Print Job</a>
 </div>
 
-<!-- Stats -->
-<div class="stats-grid">
-    <div class="stat-box">
-        <div class="stat-box-value"><?= $total ?></div>
-        <div class="stat-box-label">Total Jobs</div>
-    </div>
-    <div class="stat-box">
-        <div class="stat-box-value"><?= $done ?></div>
-        <div class="stat-box-label">Completed</div>
-    </div>
-    <div class="stat-box">
-        <div class="stat-box-value"><?= $active ?></div>
-        <div class="stat-box-label">In Queue</div>
-    </div>
-</div>
 
 <!-- Recent Jobs -->
 <div class="window">
