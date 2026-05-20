@@ -63,6 +63,9 @@ function cups_submit_job(string $filepath, array $options, string $printer = '')
     // Force grayscale
     $args[] = '-o ColorModel=Gray';
 
+    // Scale content to fill printable area without CUPS adding extra margins
+    $args[] = '-o fit-to-page';
+
     $cmd = 'lp ' . implode(' ', $args) . ' ' . escapeshellarg($filepath) . ' 2>&1';
     $output = [];
     exec($cmd, $output, $exit_code);

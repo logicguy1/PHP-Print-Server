@@ -149,7 +149,7 @@
     function renderPage(pdf, ctx, idx, cellW, cellH, cols, rows, scale) {
         return pdf.getPage(idx + 1).then(function (page) {
             var vp  = page.getViewport({ scale: 1 });
-            var fit = Math.min((cellW * 0.9) / vp.width, (cellH * 0.9) / vp.height) * scale;
+            var fit = Math.min(cellW / vp.width, cellH / vp.height) * scale;
             var sv  = page.getViewport({ scale: fit });
 
             var col = idx % cols;
