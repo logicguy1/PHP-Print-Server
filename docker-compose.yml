@@ -9,4 +9,5 @@ services:
       - /var/run/cups/cups.sock:/var/run/cups/cups.sock
     environment:
       CUPS_SERVER: /var/run/cups/cups.sock
+      PRINTER_NAME: ${PRINTER_NAME:-}
     restart: unless-stopped
