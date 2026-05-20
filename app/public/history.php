@@ -2,12 +2,14 @@
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/cups.php';
 require_once __DIR__ . '/../includes/layout.php';
 
 require_login();
 $user = current_user();
 
 $db   = db();
+cups_sync_pending_jobs($db);
 $page = max(1, (int)($_GET['page'] ?? 1));
 $offset = ($page - 1) * JOBS_PER_PAGE;
 

@@ -85,6 +85,26 @@ function cups_submit_job(string $filepath, array $options, string $printer = '')
 }
 
 /**
+ * Update DB status for all pending/printing jobs by querying CUPS.
+ */
+function cups_sync_pending_jobs(PDO $db): void {
+    $stmt = $db->query(
+        "SELECT id, cups_job_id FROM print_jobs
+         WHERE status IN ('pending','printing') AND cups_job_id IS NOT NULL"
+    );
+    $rows = $stmt->fetchAll();
+    if (empty($rows)) return;
+
+    $update = $db->prepare("UPDATE print_jobs SET status = ? WHERE id = ?");
+    foreach ($rows as $row) {
+        $new = cups_job_status((int)$row['cups_job_id'], DEFAULT_PRINTER);
+        if ($new !== 'pending' && $new !== 'printing') {
+            $update->execute([$new, $row['id']]);
+        }
+    }
+}
+
+/**
  * Poll job status. Returns 'pending'|'printing'|'done'|'failed'|'unknown'.
  */
 function cups_job_status(int $cups_job_id, string $printer = ''): string {

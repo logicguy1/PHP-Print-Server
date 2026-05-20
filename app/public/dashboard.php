@@ -2,12 +2,14 @@
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/cups.php';
 require_once __DIR__ . '/../includes/layout.php';
 
 require_login();
 $user = current_user();
 
 $db = db();
+cups_sync_pending_jobs($db);
 
 // Stats
 $total  = (int)$db->prepare('SELECT COUNT(*) FROM print_jobs WHERE user_id = ?')
