@@ -36,7 +36,13 @@ function layout_head(string $title, string $active = ''): void {
                 <?= h($label) ?>
             </a>
         <?php endforeach; ?>
-        <a href="/logout.php" class="nav-link nav-link--logout">Log Out</a>
+        <a href="/logout.php" class="nav-link nav-link--logout" title="Log Out">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <path d="M12 3v9"/>
+                <path d="M6.4 5.5a8 8 0 1 0 11.2 0"/>
+            </svg>
+        </a>
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="Menu">&#9776;</button>
 </div>
