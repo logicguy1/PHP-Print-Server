@@ -1,0 +1,12 @@
+services:
+  printserver:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./data:/var/www/data
+      - /var/run/cups/cups.sock:/var/run/cups/cups.sock
+    environment:
+      CUPS_SERVER: /var/run/cups/cups.sock
+    restart: unless-stopped

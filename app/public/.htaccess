@@ -1,0 +1,14 @@
+Options -Indexes
+
+# Block direct access to uploaded files
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^uploads/ - [F,L]
+</IfModule>
+
+# Deny direct access to uploads directory
+<FilesMatch "\.pdf$">
+    <If "%{REQUEST_URI} =~ m#^/uploads/#">
+        Require all denied
+    </If>
+</FilesMatch>

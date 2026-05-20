@@ -1,0 +1,5 @@
+data/
+app/public/uploads/*.pdf
+*.sqlite
+*.db
+.env
