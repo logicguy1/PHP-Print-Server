@@ -55,7 +55,7 @@ function layout_head(string $title, string $active = ''): void {
     <?php
 }
 
-function layout_foot(): void {
+function layout_foot(string $before_scripts = ''): void {
     $user = current_user();
     ?>
 </main>
@@ -71,6 +71,7 @@ function layout_foot(): void {
 
 </div><!-- .app-shell -->
 
+<?php if ($before_scripts !== '') echo $before_scripts . "\n"; ?>
 <script src="/js/app.js"></script>
 </body>
 </html>

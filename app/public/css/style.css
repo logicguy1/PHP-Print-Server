@@ -589,13 +589,23 @@ a:hover { color: var(--navy-light); }
     padding: 24px;
 }
 
-#previewFrame {
-    width: 100%;
-    min-height: 500px;
+#previewContainer {
     flex: 1;
-    border: none;
-    display: block;
+    min-height: 500px;
     background: var(--gray-light);
+    border: 2px solid;
+    border-color: var(--gray) var(--white) var(--white) var(--gray);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 16px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+#previewContainer canvas {
+    box-shadow: 2px 2px 8px rgba(0,0,0,.3);
+    max-width: 100%;
 }
 
 /* ============================================================
@@ -621,7 +631,7 @@ a:hover { color: var(--navy-light); }
         grid-template-columns: 1fr;
     }
     .preview-placeholder,
-    #previewFrame {
+    #previewContainer {
         min-height: 300px;
     }
 }

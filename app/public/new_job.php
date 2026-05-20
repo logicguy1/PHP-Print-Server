@@ -206,9 +206,9 @@ layout_head('New Print Job', 'new_job');
             <div class="preview-placeholder" id="previewPlaceholder">
                 <p>Select a PDF file to preview it here.</p>
             </div>
-            <iframe id="previewFrame" src="" style="display:none"></iframe>
+            <div id="previewContainer" style="display:none"></div>
         </div>
     </div>
 </div>
 
-<?php layout_foot(); ?>
+<?php layout_foot('<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>'); ?>
