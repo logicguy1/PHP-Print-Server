@@ -40,6 +40,12 @@ function db_init(PDO $pdo): void {
         );
     ");
 
+    // Migrate: add pages_per_sheet if missing (existing deployments)
+    $cols = array_column($pdo->query('PRAGMA table_info(print_jobs)')->fetchAll(), 'name');
+    if (!in_array('pages_per_sheet', $cols, true)) {
+        $pdo->exec("ALTER TABLE print_jobs ADD COLUMN pages_per_sheet INTEGER NOT NULL DEFAULT 1");
+    }
+
     // Seed default admin if no users exist
     $count = $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
     if ((int)$count === 0) {

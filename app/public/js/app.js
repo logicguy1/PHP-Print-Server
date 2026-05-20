@@ -67,6 +67,23 @@
             filename.textContent = file.name + ' (' + formatBytes(file.size) + ')';
             filename.style.display = 'block';
         }
+        showPreview(file);
+    }
+
+    function showPreview(file) {
+        var frame       = document.getElementById('previewFrame');
+        var placeholder = document.getElementById('previewPlaceholder');
+        if (!frame) return;
+
+        var url = URL.createObjectURL(file);
+        frame.src = url;
+        frame.style.display = 'block';
+        if (placeholder) placeholder.style.display = 'none';
+
+        // Revoke the previous object URL when a new file is chosen
+        frame.addEventListener('load', function revokeOnce() {
+            frame.removeEventListener('load', revokeOnce);
+        });
     }
 
     function formatBytes(bytes) {

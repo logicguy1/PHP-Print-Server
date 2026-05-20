@@ -19,10 +19,11 @@ function cups_get_printers(): array {
  * Submit a print job. Returns ['success'=>true,'job_id'=>int] or ['success'=>false,'error'=>string].
  *
  * $options = [
- *   'copies'     => int,
- *   'paper_size' => 'A4'|'Letter',
- *   'duplex'     => 'none'|'long-edge'|'short-edge',
- *   'quality'    => 'draft'|'normal'|'high',
+ *   'copies'          => int,
+ *   'paper_size'      => 'A4'|'Letter',
+ *   'duplex'          => 'none'|'long-edge'|'short-edge',
+ *   'quality'         => 'draft'|'normal'|'high',
+ *   'pages_per_sheet' => 1|2|4,
  * ]
  */
 function cups_submit_job(string $filepath, array $options, string $printer = ''): array {
@@ -53,6 +54,11 @@ function cups_submit_job(string $filepath, array $options, string $printer = '')
     $quality_map = ['draft' => '3', 'normal' => '4', 'high' => '5'];
     $quality = $quality_map[$options['quality'] ?? 'normal'] ?? '4';
     $args[] = '-o print-quality=' . $quality;
+
+    $nup = (int)($options['pages_per_sheet'] ?? 1);
+    if (in_array($nup, [2, 4, 6, 9, 16], true)) {
+        $args[] = '-o number-up=' . $nup;
+    }
 
     // Force grayscale
     $args[] = '-o ColorModel=Gray';
