@@ -88,6 +88,17 @@
         container.innerHTML = '<p style="margin:auto;color:#555;font-size:12px">Rendering preview…</p>';
         if (placeholder) placeholder.style.display = 'none';
 
+        // Images: show directly with grayscale filter (no PDF.js needed)
+        if (file.type.startsWith('image/')) {
+            var img = new Image();
+            img.onload = function () { URL.revokeObjectURL(img.src); };
+            img.src = URL.createObjectURL(file);
+            img.style.cssText = 'max-width:100%;filter:grayscale(1);box-shadow:2px 2px 8px rgba(0,0,0,.3)';
+            container.innerHTML = '';
+            container.appendChild(img);
+            return;
+        }
+
         var paperSize = paperSel ? paperSel.value : 'A4';
         var nup       = nupSel   ? parseInt(nupSel.value, 10) : 1;
         if ([1, 2, 4].indexOf(nup) === -1) nup = 1;

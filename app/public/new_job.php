@@ -39,8 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mime  = $finfo->file($upload['tmp_name']);
         $ext   = strtolower(pathinfo($upload['name'], PATHINFO_EXTENSION));
-        if ($mime !== 'application/pdf' || $ext !== 'pdf') {
-            $error = 'Only PDF files are accepted.';
+
+        $image_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/tiff'];
+        $image_exts  = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'tiff', 'tif'];
+        $is_pdf      = ($mime === 'application/pdf' && $ext === 'pdf');
+        $is_image    = in_array($mime, $image_mimes, true) && in_array($ext, $image_exts, true);
+
+        if (!$is_pdf && !$is_image) {
+            $error = 'Only PDF and image files (PNG, JPEG, GIF, TIFF, WebP) are accepted.';
         }
     }
 
@@ -59,8 +65,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // --- Store file ---
         $stored_name = bin2hex(random_bytes(16)) . '.pdf';
         $dest        = UPLOAD_DIR . $stored_name;
-        if (!move_uploaded_file($upload['tmp_name'], $dest)) {
-            $error = 'Failed to save uploaded file.';
+        if ($is_pdf) {
+            if (!move_uploaded_file($upload['tmp_name'], $dest)) {
+                $error = 'Failed to save uploaded file.';
+            }
+        } else {
+            $tmp_pdf = image_to_pdf($upload['tmp_name']);
+            if ($tmp_pdf === false) {
+                $error = 'Failed to convert image to PDF.';
+            } else {
+                if (!rename($tmp_pdf, $dest)) {
+                    copy($tmp_pdf, $dest);
+                    unlink($tmp_pdf);
+                }
+            }
         }
     }
 
@@ -131,13 +149,14 @@ layout_head('New Print Job', 'new_job');
                 <div class="form-row mb-16">
                     <label>Document (PDF)</label>
                     <div class="upload-zone" id="uploadZone">
-                        <input type="file" name="pdf" id="pdfInput" accept=".pdf,application/pdf">
+                        <input type="file" name="pdf" id="pdfInput"
+                               accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.tiff,.tif,application/pdf,image/*">
                         <div class="upload-zone-label">
-                            <strong>Click to browse</strong> or drag &amp; drop a PDF file here
+                            <strong>Click to browse</strong> or drag &amp; drop a PDF or image here
                         </div>
                         <div class="upload-filename" id="uploadFilename" style="display:none"></div>
                     </div>
-                    <span class="form-hint">PDF only · max <?= MAX_UPLOAD_MB ?> MB</span>
+                    <span class="form-hint">PDF or image (PNG, JPEG, GIF, WebP, TIFF) · max <?= MAX_UPLOAD_MB ?> MB</span>
                 </div>
 
                 <!-- Print Options -->

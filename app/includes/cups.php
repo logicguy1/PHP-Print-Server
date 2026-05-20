@@ -1,6 +1,18 @@
 <?php
 
 /**
+ * Convert an image file to PDF using img2pdf. Returns path to temp PDF or false on failure.
+ */
+function image_to_pdf(string $src_path): string|false {
+    $dest = sys_get_temp_dir() . '/' . bin2hex(random_bytes(8)) . '.pdf';
+    exec('img2pdf ' . escapeshellarg($src_path) . ' -o ' . escapeshellarg($dest) . ' 2>&1', $out, $code);
+    if ($code !== 0 || !file_exists($dest)) {
+        return false;
+    }
+    return $dest;
+}
+
+/**
  * Returns array of available printer names from lpstat -p.
  * Empty array if CUPS unreachable.
  */

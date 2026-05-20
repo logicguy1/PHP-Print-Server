@@ -3,6 +3,7 @@ FROM php:8.2-apache
 RUN apt-get update && apt-get install -y \
     cups-client \
     libsqlite3-dev \
+    img2pdf \
     && docker-php-ext-install pdo_sqlite \
     && rm -rf /var/lib/apt/lists/*
 
