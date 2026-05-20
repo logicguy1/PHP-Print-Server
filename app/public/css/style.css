@@ -560,6 +560,7 @@ a:hover { color: var(--navy-light); }
     padding: 0;
     display: flex;
     flex-direction: column;
+    flex: 1;
     min-height: 500px;
 }
 
