@@ -546,15 +546,14 @@ a:hover { color: var(--navy-light); }
 .job-form-panel  { flex: 0 0 380px; min-width: 0; display: flex; flex-direction: column; }
 .job-preview-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
-.job-form-panel > .window,
-.job-preview-panel > .window {
-    flex: 1;
+.job-form-panel,
+.job-preview-panel {
     margin-bottom: 0;
     display: flex;
     flex-direction: column;
 }
-.job-form-panel > .window > .window-body,
-.job-preview-panel > .window > .window-body { flex: 1; }
+.job-form-panel > .window-body,
+.job-preview-panel > .window-body { flex: 1; }
 
 .preview-body {
     padding: 0;
